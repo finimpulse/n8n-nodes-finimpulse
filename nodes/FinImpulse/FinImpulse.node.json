@@ -1,0 +1,22 @@
+{
+	"node": "n8n-nodes-base.FinImpulse",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": [
+		"Data & Storage",
+		"Finance & Accounting",
+		"Analytics"
+	],
+	"resources": {
+		"credentialDocumentation": [
+			{
+				"url": "https://developers.finimpulse.com/authentication/"
+			}
+		],
+		"primaryDocumentation": [
+			{
+				"url": "https://developers.finimpulse.com/"
+			}
+		]
+	}
+}

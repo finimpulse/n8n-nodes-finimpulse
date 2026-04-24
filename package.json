@@ -1,0 +1,67 @@
+{
+  "name": "n8n-nodes-finimpulse",
+  "version": "1.0.0",
+  "description": "FinImpulse is a financial data API for fintech products, analytics platforms, trading tools, and AI workflows.",
+  "keywords": [
+    "n8n-community-node-package",
+    "finimpulse",
+    "financial data API",
+    "market data API",
+    "stock market API",
+    "trading data API",
+    "stock prices API",
+    "real-time market data",
+    "historical market data",
+    "financial data global",
+    "market data integration",
+    "financial data automation",
+    "REST financial API",
+    "JSON market data",
+    "financial data for AI",
+    "trading data automation",
+    "API for financial apps"
+  ],
+  "license": "MIT",
+  "homepage": "https://finimpulse.com/",
+  "author": {
+    "name": "FinImpulse",
+    "email": "support@finimpulse.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finimpulse/n8n-nodes-finimpulse"
+  },
+  "scripts": {
+    "build": "tsc && gulp build:icons",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials package.json",
+    "lintfix": "eslint nodes credentials package.json --fix",
+    "prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes credentials package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "strict": true,
+    "credentials": [
+      "dist/credentials/FinImpulseApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/FinImpulse/FinImpulse.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "^8.32.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-n8n-nodes-base": "^1.16.6",
+    "gulp": "^5.0.1",
+    "n8n-workflow": "^2.14.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  }
+}
