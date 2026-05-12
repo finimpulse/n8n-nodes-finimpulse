@@ -6,7 +6,7 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 import { StatisticsOperations } from './resources/statistics';
-import { MarketDatalOperations } from './resources/market_data';
+import { MarketDataOperations } from './resources/market_data';
 import { AnalystInsightsOperations } from './resources/analyst_insights';
 import { histories, news, profile, search, summary } from './execute/general';
 import { analysts, earnings, recommendations, upgradesDowngrades } from './execute/analysis';
@@ -32,13 +32,6 @@ export class FinImpulse implements INodeType {
 				required: true,
 			},
 		],
-		requestDefaults: {
-			method: 'POST',
-			baseURL: 'https://api.finimpulse.com/v1',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		},
 		properties: [
 			{
 				displayName: 'Resource',
@@ -61,7 +54,7 @@ export class FinImpulse implements INodeType {
 				],
 				default: 'market_data',
 			},
-			...MarketDatalOperations,
+			...MarketDataOperations,
 			...AnalystInsightsOperations,
 			...StatisticsOperations,
 		],
@@ -97,27 +90,23 @@ export class FinImpulse implements INodeType {
 			throw new NodeOperationError(this.getNode(), "Operation not found");
 		}
 
-		try {
-			const items = this.getInputData();
+		const items = this.getInputData();
 
-			for (let i = 0; i < items.length; i++) {
-				const result = await fn(this, i);
-				if (Array.isArray(result)) {
-					for (const r of result) {
-						responseData.push({
-							json: r,
-							pairedItem: { item: i }
-						});
-					}
-				} else {
+		for (let i = 0; i < items.length; i++) {
+			const result = await fn(this, i);
+			if (Array.isArray(result)) {
+				for (const r of result) {
 					responseData.push({
-						json: result,
+						json: r,
 						pairedItem: { item: i }
 					});
 				}
+			} else {
+				responseData.push({
+					json: result,
+					pairedItem: { item: i }
+				});
 			}
-		} catch (e) {
-			throw e;
 		}
 
 		return [responseData];
