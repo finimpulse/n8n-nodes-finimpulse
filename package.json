@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-finimpulse",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "FinImpulse is a financial data API for fintech products, analytics platforms, trading tools, and AI workflows.",
   "keywords": [
     "n8n-community-node-package",
@@ -32,14 +32,14 @@
     "url": "https://github.com/finimpulse/n8n-nodes-finimpulse"
   },
   "scripts": {
-		"build": "n8n-node build",
-		"build:watch": "tsc --watch",
-		"dev": "n8n-node dev",
-		"lint": "n8n-node lint",
-		"lint:fix": "n8n-node lint --fix",
-		"release": "n8n-node release",
-		"prepublishOnly": "n8n-node prerelease"
-	},
+    "build": "n8n-node build",
+    "build:watch": "tsc --watch",
+    "dev": "n8n-node dev",
+    "lint": "n8n-node lint",
+    "lint:fix": "n8n-node lint --fix",
+    "release": "n8n-node release",
+    "prepublishOnly": "n8n-node prerelease"
+  },
   "files": [
     "dist"
   ],
@@ -54,12 +54,12 @@
     ]
   },
   "devDependencies": {
-		"@n8n/node-cli": "*",
-		"eslint": "9.39.4",
-		"prettier": "3.8.3",
-		"release-it": "20.0.1",
-		"typescript": "5.9.3"
-	},
+    "@n8n/node-cli": "*",
+    "eslint": "9.39.4",
+    "prettier": "3.8.3",
+    "release-it": "20.0.1",
+    "typescript": "5.9.3"
+  },
   "peerDependencies": {
     "n8n-workflow": "*"
   }
