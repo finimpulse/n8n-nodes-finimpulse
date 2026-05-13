@@ -23,10 +23,7 @@
   ],
   "license": "MIT",
   "homepage": "https://finimpulse.com/",
-  "author": {
-    "name": "FinImpulse",
-    "email": "support@finimpulse.com"
-  },
+  "author": { "name": "FinImpulse", "email": "support@finimpulse.com" },
   "repository": {
     "type": "git",
     "url": "https://github.com/finimpulse/n8n-nodes-finimpulse"
@@ -40,18 +37,12 @@
     "release": "n8n-node release",
     "prepublishOnly": "n8n-node prerelease"
   },
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "n8n": {
     "n8nNodesApiVersion": 1,
     "strict": true,
-    "credentials": [
-      "dist/credentials/FinImpulseApi.credentials.js"
-    ],
-    "nodes": [
-      "dist/nodes/FinImpulse/FinImpulse.node.js"
-    ]
+    "credentials": ["dist/credentials/FinImpulseApi.credentials.js"],
+    "nodes": ["dist/nodes/FinImpulse/FinImpulse.node.js"]
   },
   "devDependencies": {
     "@n8n/node-cli": "*",
@@ -60,7 +51,5 @@
     "release-it": "20.0.1",
     "typescript": "5.9.3"
   },
-  "peerDependencies": {
-    "n8n-workflow": "*"
-  }
+  "peerDependencies": { "n8n-workflow": "*" }
 }

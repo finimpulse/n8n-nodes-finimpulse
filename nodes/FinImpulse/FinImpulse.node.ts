@@ -4,6 +4,7 @@ import {
 	IExecuteFunctions,
 	INodeExecutionData,
 	NodeOperationError,
+	NodeConnectionTypes,
 } from 'n8n-workflow';
 import { StatisticsOperations } from './resources/statistics';
 import { MarketDataOperations } from './resources/market_data';
@@ -24,8 +25,9 @@ export class FinImpulse implements INodeType {
 		defaults: {
 			name: 'FinImpulse',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		usableAsTool: true,
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'finImpulseApi',
@@ -38,6 +40,7 @@ export class FinImpulse implements INodeType {
 				name: 'resource',
 				type: 'options',
 				noDataExpression: true,
+				// eslint-disable-next-line @n8n/community-nodes/options-sorted-alphabetically
 				options: [
 					{
 						name: 'Market Data',
@@ -61,7 +64,7 @@ export class FinImpulse implements INodeType {
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-		let responseData = [];
+		const responseData = [];
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
 		const mapping: ResourceOperationFunctions = {
@@ -93,19 +96,32 @@ export class FinImpulse implements INodeType {
 		const items = this.getInputData();
 
 		for (let i = 0; i < items.length; i++) {
-			const result = await fn(this, i);
-			if (Array.isArray(result)) {
-				for (const r of result) {
+			try {
+				const result = await fn(this, i);
+				if (Array.isArray(result)) {
+					for (const r of result) {
+						responseData.push({
+							json: r,
+							pairedItem: { item: i }
+						});
+					}
+				} else {
 					responseData.push({
-						json: r,
+						json: result,
 						pairedItem: { item: i }
 					});
 				}
-			} else {
-				responseData.push({
-					json: result,
-					pairedItem: { item: i }
-				});
+			} catch  (error) {
+				if (this.continueOnFail()) {
+					items.push({ json: this.getInputData(i)[0].json, error, pairedItem: i });
+				} else {
+					if (error.context) {
+						error.context.itemIndex = i;
+					}
+					throw new NodeOperationError(this.getNode(), error, {
+						itemIndex: i,
+					});
+				}
 			}
 		}
 
@@ -115,6 +131,6 @@ export class FinImpulse implements INodeType {
 
 type ResourceOperationFunctions = {
 	[resource: string]: {
-		[operation: string]: (ef: IExecuteFunctions, i: number) => Promise<any>;
+		[operation: string]: (ef: IExecuteFunctions, i: number) => Promise<unknown>;
 	}
 };

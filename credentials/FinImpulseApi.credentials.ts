@@ -1,5 +1,6 @@
 import {
 	IAuthenticateGeneric,
+	Icon,
 	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
@@ -8,6 +9,7 @@ import {
 export class FinImpulseApi implements ICredentialType {
 	name = 'finImpulseApi';
 	displayName = 'FinImpulse API';
+	icon: Icon = { light: 'file:../icons/finimpulse.svg', dark: 'file:../icons/finimpulse.dark.svg' };
 	documentationUrl = 'https://developers.finimpulse.com/authentication/';
 	properties: INodeProperties[] = [
 		{

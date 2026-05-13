@@ -13,13 +13,13 @@ export async function search(ef: IExecuteFunctions, i: number) {
 	let parsedFilters = [];
 	try {
 		parsedFilters = parseFilters(filters);
-	} catch (e) {
+	} catch {
 		throw new NodeOperationError(ef.getNode(), "Invalid Filters value");
 	}
 
 	const sortBy = ef.getNodeParameter('sort_by', i) as IDataObject;
 
-	let data: Record<string, any> = {
+	const data: Record<string, unknown> = {
 		search_text: ef.getNodeParameter('search_text', i) ?? null,
 		quote_types: ef.getNodeParameter('quote_types', i) ?? null,
 		offset: ef.getNodeParameter('offset', i) ?? null,
@@ -48,7 +48,7 @@ export async function search(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 
 	const items = result?.result?.items ?? [];
-	const response: INodeListSearchItems[] = items.map((item: any) => ({
+	const response: INodeListSearchItems[] = items.map((item: Record<string, unknown>) => ({
 		...item,
 		_meta: {
 			total_count: result?.result?.total_count ?? 0,
@@ -63,7 +63,7 @@ export async function search(ef: IExecuteFunctions, i: number) {
 export async function histories(ef: IExecuteFunctions, i: number) {
 	const sortBy = ef.getNodeParameter('sort_by', i) as IDataObject;
 
-	let data: Record<string, any> = {
+	const data: Record<string, unknown> = {
 		symbol: ef.getNodeParameter('symbol', i),
 		types: ef.getNodeParameter('types', i) ?? null,
 		interval: ef.getNodeParameter('interval', i) ?? null,
@@ -86,7 +86,7 @@ export async function histories(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 
 	const items = result?.result?.items ?? [];
-	const response: INodeListSearchItems[] = items.map((item: any) => ({
+	const response: INodeListSearchItems[] = items.map((item: Record<string, unknown>) => ({
 		...item,
 		_meta: {
 			total_count: result?.result?.total_count ?? 0,
@@ -122,7 +122,7 @@ export async function profile(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 
 	const items = result?.result?.items ?? [];
-	const response: INodeListSearchItems[] = items.map((item: any) => ({
+	const response: INodeListSearchItems[] = items.map((item: Record<string, unknown>) => ({
 		...item,
 	}));
 
@@ -134,7 +134,7 @@ export async function news(ef: IExecuteFunctions, i: number) {
 	let parsedFilters = [];
 	try {
 		parsedFilters = parseFilters(filters);
-	} catch (e) {
+	} catch {
 		throw new NodeOperationError(ef.getNode(), "Invalid Filters value");
 	}
 
@@ -157,7 +157,7 @@ export async function news(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 
 	const items = result?.result?.items ?? [];
-	const response: INodeListSearchItems[] = items.map((item: any) => ({
+	const response: INodeListSearchItems[] = items.map((item: Record<string, unknown>) => ({
 		...item,
 		_meta: {
 			total_count: result?.result?.total_count ?? 0,

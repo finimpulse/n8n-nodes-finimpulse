@@ -1,5 +1,13 @@
 import { IDataObject } from "n8n-workflow";
 
+type MultiOptionItem = {
+  value: string;
+};
+
+type MultiOptionItems = {
+  values?: MultiOptionItem[];
+};
+
 export function parseFilters(
 	filters: string
 ) {
@@ -12,44 +20,28 @@ export function parseFilters(
 }
 
 export function parseMultiOptionItems(
-	items:IDataObject
-) {
-	let values = items.values as Array<any>;
-	let parsedItems = [];
-	if (values && values.length) {
-		parsedItems = values.reduce(function(result, item) {
-			result.push(item['value']);
-			return result;
-		}, []);
-	}
+  items: IDataObject
+): string[] {
+  const { values } = items as MultiOptionItems;
 
-	return parsedItems;
+  if (!values?.length) {
+    return [];
+  }
+
+  return values.map((item) => item.value);
 }
 
-export function parseSortBy(
-	orderBy: IDataObject
-) {
-	let values = orderBy.values as Array<any>;
-	let parsedSortBy = new Array<string>;
-	for (const key in values) {
-		if (Object.prototype.hasOwnProperty.call(values, key) && values[key] && values[key]['fieldName']) {
-			parsedSortBy.push(values[key]['fieldName'] + ',' + values[key]['direction']);
-		}
-	}
+export function formatDate(value: unknown): string | null {
+  if (!value) return null;
 
-	return parsedSortBy;
-}
+  const date =
+    value instanceof Date
+      ? value
+      : typeof value === 'string' || typeof value === 'number'
+      ? new Date(value)
+      : null;
 
-export function formatDate(
-	value: unknown
-) {
-	try {
-		if (!value) return null;
+  if (!date || isNaN(date.getTime())) return null;
 
-		const date = value instanceof Date ? value : new Date(value as any);
-
-		return date.toISOString().slice(0, 10);
-	} catch {
-		return null;
-	}
+  return date.toISOString().slice(0, 10);
 }

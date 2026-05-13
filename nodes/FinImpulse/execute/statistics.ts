@@ -26,7 +26,7 @@ export async function risks(ef: IExecuteFunctions, i: number) {
 	let parsedFilters = [];
 	try {
 		parsedFilters = parseFilters(filters);
-	} catch (e) {
+	} catch {
 		throw new NodeOperationError(ef.getNode(), "Invalid Filters value");
 	}
 
@@ -46,7 +46,7 @@ export async function risks(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 	
 	const items = result?.result?.items ?? [];
-	const response: INodeListSearchItems[] = items.map((item: any) => ({
+	const response: INodeListSearchItems[] = items.map((item: Record<string, unknown>) => ({
 		...item,
 		_meta: {
 			total_count: result?.result?.total_count ?? 0,
@@ -69,7 +69,7 @@ export async function annualReturns(ef: IExecuteFunctions, i: number) {
 	const result = await finImpulseRequest(ef, params);
 
 	const items = result?.result ?? [];
-	const response: INodeListSearchItems[] =items.map((item: any) => ({
+	const response: INodeListSearchItems[] =items.map((item: Record<string, unknown>) => ({
 		...item,
 		_meta: {
 			total_count: result?.result?.total_count ?? 0,
