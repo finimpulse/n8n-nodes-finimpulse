@@ -9,7 +9,7 @@ import {
 import { StatisticsOperations } from './resources/statistics';
 import { MarketDataOperations } from './resources/market_data';
 import { AnalystInsightsOperations } from './resources/analyst_insights';
-import { histories, news, profile, search, summary } from './execute/general';
+import { histories, market_price, metrics, news, profile, search, search_lite, summary, summary_lite } from './execute/general';
 import { analysts, earnings, recommendations, upgradesDowngrades } from './execute/analysis';
 import { annualReturns, general, risks } from './execute/statistics';
 
@@ -70,10 +70,14 @@ export class FinImpulse implements INodeType {
 		const mapping: ResourceOperationFunctions = {
 			'market_data': {
 				'search': search,
+				'search-lite': search_lite,
 				'histories': histories,
 				'summary': summary,
+				'summary-lite': summary_lite,
 				'profile': profile,
-				'news': news
+				'news': news,
+				'market-price': market_price,
+				'metrics': metrics
 			},
 			'analyst_insights': {
 				'earnings': earnings,

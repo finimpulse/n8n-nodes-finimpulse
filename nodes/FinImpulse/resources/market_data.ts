@@ -22,6 +22,12 @@ export const MarketDataOperations: INodeProperties[] = [
 				description: 'Returns assets that match a search query (stocks, ETFs, funds)',
 			},
 			{
+				name: 'Search Assets (Lite)',
+				value: 'search-lite',
+				action: 'Search assets lite',
+				description: 'Returns a unified, cross-asset search result for stocks, ETFs, and mutual funds with a focused field set covering core identification, current pricing, and key performance metrics',
+			},
+			{
 				name: 'Get Price History',
 				value: 'histories',
 				action: 'Get price history',
@@ -32,6 +38,12 @@ export const MarketDataOperations: INodeProperties[] = [
 				value: 'summary',
 				action: 'Get asset summary',
 				description: 'Returns a full snapshot of an asset, including price, fundamentals, and key metrics',
+			},
+			{
+				name: 'Get Asset Summary (Lite)',
+				value: 'summary-lite',
+				action: 'Get asset summary lite',
+				description: 'Returns a focused snapshot of key identification, market, and fundamental data for a single asset symbol',
 			},
 			{
 				name: 'Get Asset Profile',
@@ -45,6 +57,18 @@ export const MarketDataOperations: INodeProperties[] = [
 				action: 'Get news',
 				description: 'Returns the latest news and press releases for an asset',
 			},
+			{
+				name: 'Get Market Price',
+				value: 'market-price',
+				action: 'Get market price',
+				description: 'Returns the current market price snapshot for a single asset symbol',
+			},
+			{
+				name: 'Get Financial Metrics',
+				value: 'metrics',
+				action: 'Get financial metrics',
+				description: 'Returns dividend data, returns, profitability, growth, leverage, and business quality metrics for a single asset symbol',
+			},
 		],
 		default: 'search',
 	},
@@ -57,10 +81,54 @@ export const MarketDataOperations: INodeProperties[] = [
 		description: 'Free-text query (e.g., “NVDA”, “NVIDIA”, partial ticker, partial name)',
 		displayOptions: {
 			show: {
-				operation: ['search'],
+				operation: ['search', 'search-lite'],
 			},
 		},
 		default: '',
+	},
+	{
+		displayName: 'Asset Identifier (Ticker Symbol)',
+		name: 'symbol',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				operation: ['histories', 'summary', 'profile', 'news', 'summary-lite', 'market-price', 'metrics'],
+			},
+		},
+		default: '',
+	},
+	{
+		displayName: 'Select Identifiers',
+		name: 'select_identifiers',
+		type: 'fixedCollection',
+		description: 'A list of field names to include in the response',
+		placeholder: 'Add Identifier',
+		default: {},
+		typeOptions: {
+			multipleValues: true,
+		},
+		options: [
+			{
+				name: 'values',
+				displayName: 'Identifier',
+				values: [
+					{
+						displayName: 'Identifier',
+						name: 'value',
+						type: 'string',
+						required: true,
+						hint: 'For the list of available field names, see the <a href="https://developers.finimpulse.com/v1/search-lite/#response">Response section</a>',
+						default: '',
+					}
+				],
+			},
+		],
+		displayOptions: {
+			show: {
+				operation: ['search-lite', 'summary-lite'],
+			},
+		},
 	},
 	{
 		displayName: 'Quote Types',
@@ -83,22 +151,41 @@ export const MarketDataOperations: INodeProperties[] = [
 		],
 		displayOptions: {
 			show: {
-				operation: ['search'],
+				operation: ['search', 'search-lite'],
 			},
 		},
 		default: [],
 	},
 	{
-		displayName: 'Asset Identifier (Ticker Symbol)',
-		name: 'symbol',
-		type: 'string',
-		required: true,
+		displayName: 'Ticker Symbols to Retrieve',
+		name: 'symbols',
+		type: 'fixedCollection',
+		description: 'A list of ticker symbols to retrieve',
+		placeholder: 'Add symbol',
+		default: [],
+		typeOptions: {
+			multipleValues: true,
+		},
+		options: [
+			{
+				name: 'values',
+				displayName: 'Symbol',
+				values: [
+					{
+						displayName: 'Symbol',
+						name: 'value',
+						type: 'string',
+						required: true,
+						default: '',
+					}
+				],
+			},
+		],
 		displayOptions: {
 			show: {
-				operation: ['histories', 'summary', 'profile', 'news'],
+				operation: ['search-lite'],
 			},
 		},
-		default: '',
 	},
 	{
 		displayName: 'Record Types',
@@ -228,7 +315,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['search', 'histories', 'news'],
+				operation: ['search', 'histories', 'news', 'search-lite'],
 			},
 		},
 		default: 100
@@ -243,7 +330,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		},
 		displayOptions: {
 			show: {
-				operation: ['search', 'histories', 'news'],
+				operation: ['search', 'histories', 'news', 'search-lite'],
 			},
 		},
 		default: 0,
@@ -258,6 +345,19 @@ export const MarketDataOperations: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				operation: ['search'],
+			},
+		},
+	},
+	{
+		displayName: 'Filters',
+		name: 'filters',
+		type: 'string',
+		default: '',
+		description: 'Optional filter expressions',
+		hint: 'You can find details in the <a href="https://developers.finimpulse.com/v1/search-lite/#api-request-filters">FinImpulse documentation</a>.',
+		displayOptions: {
+			show: {
+				operation: ['search-lite'],
 			},
 		},
 	},
@@ -307,7 +407,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		],
 		displayOptions: {
 			show: {
-				operation: [ 'search', 'histories', 'news'],
+				operation: [ 'search', 'histories', 'news', 'search-lite'],
 			},
 		},
 	},
@@ -333,7 +433,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		default: 'default',
 		displayOptions: {
 			show: {
-				operation: ['search'],
+				operation: ['search', 'search-lite'],
 			},
 		},
 	},
@@ -358,7 +458,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		default: 'default',
 		displayOptions: {
 			show: {
-				operation: ['search'],
+				operation: ['search', 'search-lite'],
 			},
 		},
 	},
@@ -383,7 +483,7 @@ export const MarketDataOperations: INodeProperties[] = [
 		default: 'default',
 		displayOptions: {
 			show: {
-				operation: ['search'],
+				operation: ['search', 'search-lite'],
 			},
 		},
 	},
