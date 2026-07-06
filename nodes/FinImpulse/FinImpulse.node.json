@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-base.FinImpulse",
+	"node": "n8n-nodes-finimpulse.FinImpulse",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": [
